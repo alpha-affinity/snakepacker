@@ -1,7 +1,7 @@
 # this Dockerfile demonstrates the creation of a venv with a jupyter server
 ARG PYTHON_MINOR_VERSION
 
-FROM ghcr.io/ddelange/pycuda/buildtime:master as builder
+FROM ghcr.io/alpha-affinity/snakepacker/buildtime:master as builder
 
 ARG PYTHON_MINOR_VERSION
 
@@ -13,7 +13,7 @@ RUN pip install jupyterlab ipywidgets ipdb
 RUN find-libdeps ${VIRTUAL_ENV} > ${VIRTUAL_ENV}/pkgdeps.txt
 
 
-FROM ghcr.io/ddelange/pycuda/runtime:3.${PYTHON_MINOR_VERSION}-master
+FROM ghcr.io/alpha-affinity/snakepacker/runtime:3.${PYTHON_MINOR_VERSION}-master
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
