@@ -8,9 +8,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  UBUNTU_IMAGE: nvidia/cuda
-  # CUDA compatibility ref https://docs.nvidia.com/deploy/cuda-compatibility/index.html
-  UBUNTU_TAG: 11.8.0-cudnn8-runtime-ubuntu20.04
+  UBUNTU_IMAGE: ubuntu
+  UBUNTU_TAG: jammy
   PLATFORMS: linux/amd64,linux/arm64/v8
 
 jobs:
