@@ -1,6 +1,6 @@
-# pycuda
+# snakepacker
 
-Build compact multi-stage CUDA images for Python based ML projects.
+Compact multi-stage Docker images for production-grade Python projects
 
 
 ## Concept
@@ -53,16 +53,13 @@ with the following content:
 # 1. Multiple Python versions (3.6 and newer)
 # 2. Required Python headers
 # 3. C compiler and other helpful libraries commonly used for building wheels
-FROM ghcr.io/ddelange/pycuda/buildtime:master as builder
+FROM ghcr.io/alpha-affinity/snakepacker/buildtime:master as builder
 
 # Create virtualenv on e.g. python 3.9
 # Target folder should be the same on the build stage and on the target stage
 # A VIRTUAL_ENV variable is set in the shared base image to make this easier
 RUN python3.9 -m venv ${VIRTUAL_ENV} && \
     pip install -U pip setuptools wheel
-
-# install torch CUDA build ref https://pytorch.org/get-started/locally/
-ENV PIP_EXTRA_INDEX_URL="https://download.pytorch.org/whl/cu118"
 
 # Install some packages into the venv
 RUN pip install jupyterlab ipywidgets ipdb torch torchaudio torchvision
@@ -74,7 +71,7 @@ RUN find-libdeps ${VIRTUAL_ENV} > ${VIRTUAL_ENV}/pkgdeps.txt
 ####################### TARGET STAGE ############################
 #################################################################
 # Use the same python version used on the build stage
-FROM ghcr.io/ddelange/pycuda/runtime:3.9-master
+FROM ghcr.io/alpha-affinity/snakepacker/runtime:3.9-master
 
 # Copy over the venv (ensure same path as venvs are not designed to be portable)
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -92,7 +89,7 @@ And just build this:
 docker build -t jupyter .
 ```
 
-There are also pre-built jupyter images [available](https://github.com/ddelange/pycuda/pkgs/container/pycuda%2Fjupyter).
+There are also pre-built jupyter images [available](https://github.com/alpha-affinity/snakepacker/pkgs/container/snakepacker%2Fjupyter).
 
 ## Useful tools
 
