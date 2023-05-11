@@ -11,6 +11,8 @@ used headers, libraries, compilers, etc. which are only needed during build time
 base image with a Python version of choice.
 Any build artifacts that are unneeded for runtime won't be copied into the final image, further reducing image size.
 
+For a live example, see [alpha-affinity/libpostal-fastapi](https://github.com/alpha-affinity/libpostal-fastapi).
+
 ## Reasoning
 
 Why so complex? You could just `COPY` directory with your python project into 
