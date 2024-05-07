@@ -77,7 +77,7 @@ jobs:
       fail-fast: false
       matrix:
         image: [runtime]
-        python_minor_version: [7, 8, 9, 10, 11, 12]
+        python_minor_version: [7, 8, 9, 10, 11, 12, 13]
         include:
           - image: buildtime
             python_minor_version:
@@ -119,10 +119,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           # run PRs with BASE_TAG master because base won't be pushed
+          # on python_minor_version < 12, apt-install python3.x-distutils (used to be part of stdlib) instead of apt-install python3.x
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/${{ github.repository }}/base
             BASE_TAG=${{ github.event_name != 'pull_request' && github.sha || 'master' }}
-            PYTHON_MINOR_VERSION=${{ matrix.python_minor_version }}
+            PYTHON_MINOR_VERSION=${{ matrix.python_minor_version }}${{ (matrix.python_minor_version < 12 && '-distutils') || '' }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.image }}:${{ (startsWith(matrix.image, 'runtime') && format('3.{0}-', matrix.python_minor_version)) || '' }}buildcache
           cache-to: ${{ github.event_name != 'pull_request' && env.CACHE_TO_STRING || '' }}
           provenance: false
@@ -135,11 +136,11 @@ jobs:
       fail-fast: false
       matrix:
         image: [jupyter, vanilla]
-        python_minor_version: [7, 8, 9, 10, 11, 12]
+        python_minor_version: [7, 8, 9, 10, 11, 12, 13]
         exclude:
-          # pyzmq currently missing cp312 wheels https://pypi.org/project/pyzmq/25.0.2/#files
+          # pyzmq currently missing cp313 wheels https://pypi.org/project/pyzmq/25.1.2/#files
           - image: jupyter
-            python_minor_version: 12
+            python_minor_version: 13
 
     steps:
       - uses: actions/checkout@v3
