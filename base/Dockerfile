@@ -22,6 +22,8 @@ ENV TZ="Etc/UTC" \
 	DEBIAN_FRONTEND="noninteractive" \
 	SHELL="/bin/bash" \
 	PIP_NO_CACHE_DIR=1 \
+	UV_NO_CACHE=1 \
+ 	PYTHONDONTWRITEBYTECODE=1 \
  	PYTHONUNBUFFERED=1
 
 # needed for string substitution in RUN directives
