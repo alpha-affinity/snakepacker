@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   UBUNTU_IMAGE: ubuntu
-  UBUNTU_TAG: jammy
+  UBUNTU_TAG: noble
   PLATFORMS: linux/amd64,linux/arm64/v8
 
 jobs:
